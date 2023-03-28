@@ -1,0 +1,35 @@
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.json.JSONObject;
+
+public class PaymentGatewayExample {
+
+    public static void main(String[] args) {
+        // Set up the payment request
+        JSONObject paymentRequest = new JSONObject()
+                .put("amount", 100)
+                .put("currency", "USD")
+                .put("cardNumber", "1234567890123456")
+                .put("expiryDate", "12/23")
+                .put("cvv", "123");
+
+        // Send the payment request to the payment gateway
+        Response response = RestAssured.given()
+                .contentType("application/json")
+                .body(paymentRequest.toString())
+                .post("https://api.paymentgateway.com/payment");
+
+        // Check the payment confirmation
+        if (response.jsonPath().getBoolean("success")) {
+            System.out.println("Payment successful!");
+        } else {
+            System.out.println("Payment failed.");
+        }
+    }
+}
+
+
+/*
+here is an example of how to use Rest-Assured with Java to 
+send payment requests to a payment gateway and check the payment confirmation:
+*/
